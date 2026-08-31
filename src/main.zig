@@ -4,15 +4,18 @@ const operations = enum(u8) {
     nop  = 0x00,
     push = 0x01,
     pop  = 0x02,
-    add  = 0x03
+    add  = 0x03,
+    sub  = 0x04,
+    mul  = 0x05,
+    div  = 0x06
 };
 
 const code = [_]u8{
     @intFromEnum(operations.push),
-    0x03,
+    0x06,
     @intFromEnum(operations.push),
-    0x04,
-    @intFromEnum(operations.add)
+    0x02,
+    @intFromEnum(operations.div)
 };
 
 pub fn run(program: []const u8, stack: *std.ArrayList(i32), allocator: std.mem.Allocator) !i32 {
@@ -35,6 +38,24 @@ pub fn run(program: []const u8, stack: *std.ArrayList(i32), allocator: std.mem.A
                 const a = stack.pop() orelse 0;
                 try stack.append(allocator, a + b);
             },
+            .sub => {
+                const b = stack.pop() orelse 0;
+                const a = stack.pop() orelse 0;
+                try stack.append(allocator, a - b);
+            },
+            .mul => {
+                const b = stack.pop() orelse 0;
+                const a = stack.pop() orelse 0;
+                try stack.append(allocator, a * b);
+            },
+            .div => {
+                var b = stack.pop() orelse 1;
+                const a = stack.pop() orelse 0;
+                if (b == 0) {
+                    b = 1;
+                }
+                try stack.append(allocator, @divTrunc(a, b));
+            }
         }
     }
     return if (stack.items.len > 0) stack.items[stack.items.len - 1] else 0;
