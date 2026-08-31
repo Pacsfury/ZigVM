@@ -7,14 +7,14 @@ const operations = enum(u8) {
     add  = 0x03,
     sub  = 0x04,
     mul  = 0x05,
-    div  = 0x06
+    div  = 0x06,
+    dup  = 0x07
 };
 
 const code = [_]u8{
     @intFromEnum(operations.push),
     0x06,
-    @intFromEnum(operations.push),
-    0x02,
+    @intFromEnum(operations.dup),
     @intFromEnum(operations.div)
 };
 
@@ -55,6 +55,9 @@ pub fn run(program: []const u8, stack: *std.ArrayList(i32), allocator: std.mem.A
                     b = 1;
                 }
                 try stack.append(allocator, @divTrunc(a, b));
+            },
+            .dup => {
+                try stack.append(allocator, @as(i32, stack.items[stack.items.len - 1]));
             }
         }
     }
