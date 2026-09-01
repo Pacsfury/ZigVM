@@ -61,4 +61,3 @@ pub fn main() !void {
     const result = try run(&code, &stack, allocator);
     std.debug.print("Result: {}\n", .{result});
 }
-Run zvm upgrade or download the latest release 
