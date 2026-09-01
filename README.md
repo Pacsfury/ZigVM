@@ -6,14 +6,23 @@ Developing another simple stack-based virtual machine, this time written in Zig 
 ## Operations
 
 0 - NOP - _No operation_
+
 1 - PUSH - _Adds next number at stack_
+
 2 - POP - _Deletes top stack number_
+
 3 - ADD - _Sums two top numbers, pops them and push the result_
+
 4 - SUB - _Subs two top numbers, pops them and push the result_
+
 5 - MUL - _Mulitplies two top numbers, pops them and push the result_
+
 6 - DIV - _Divides two top numbers, pops them and push the result_
+
 7 - DUP - _Duplicates top stack item_
+
 8 - RES - _Prints top stack item_
+
 9 - JMP - _Goes to the next program number_
 
 ## Examples
