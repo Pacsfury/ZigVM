@@ -2,7 +2,7 @@ const std = @import("std");
 
 const operations = enum(u8) { nop = 0x00, push = 0x01, pop = 0x02, add = 0x03, sub = 0x04, mul = 0x05, div = 0x06, dup = 0x07, res = 0x08, jmp = 0x09 };
 
-const code = [_]u8{ @intFromEnum(operations.push), 0x06, @intFromEnum(operations.dup), @intFromEnum(operations.div), @intFromEnum(operations.res), @intFromEnum(operations.push), 0x00 };
+const code = [_]u8{ 0x01, 0x06, 0x07, 0x06, 0x08, 0x01, 0x00 };
 
 pub fn run(program: []const u8, stack: *std.ArrayList(i32), allocator: std.mem.Allocator) !i32 {
     var pc: usize = 0;
