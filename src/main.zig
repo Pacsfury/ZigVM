@@ -1,8 +1,8 @@
 const std = @import("std");
 
-const operations = enum(u8) { nop = 0x00, push = 0x01, pop = 0x02, add = 0x03, sub = 0x04, mul = 0x05, div = 0x06, dup = 0x07 };
+const operations = enum(u8) { nop = 0x00, push = 0x01, pop = 0x02, add = 0x03, sub = 0x04, mul = 0x05, div = 0x06, dup = 0x07, res = 0x08, jmp = 0x09 };
 
-const code = [_]u8{ @intFromEnum(operations.push), 0x06, @intFromEnum(operations.dup), @intFromEnum(operations.div) };
+const code = [_]u8{ @intFromEnum(operations.push), 0x06, @intFromEnum(operations.dup), @intFromEnum(operations.div), @intFromEnum(operations.res), @intFromEnum(operations.push), 0x00 };
 
 pub fn run(program: []const u8, stack: *std.ArrayList(i32), allocator: std.mem.Allocator) !i32 {
     var pc: usize = 0;
@@ -45,6 +45,13 @@ pub fn run(program: []const u8, stack: *std.ArrayList(i32), allocator: std.mem.A
             .dup => {
                 try stack.append(allocator, @as(i32, stack.items[stack.items.len - 1]));
             },
+            .res => {
+                std.debug.print("{}\n", .{if (stack.items.len > 0) stack.items[stack.items.len - 1] else 0});
+            },
+            .jmp => {
+                const target = program[pc];
+                pc = @as(usize, target);
+            },
         }
     }
     return if (stack.items.len > 0) stack.items[stack.items.len - 1] else 0;
@@ -59,5 +66,5 @@ pub fn main() !void {
     defer stack.deinit(allocator);
 
     const result = try run(&code, &stack, allocator);
-    std.debug.print("Result: {}\n", .{result});
+    std.debug.print("\nProgram exited with code {}\n", .{result});
 }
