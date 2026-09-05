@@ -69,6 +69,15 @@ Developing another simple stack-based virtual machine, this time written in Zig 
 
 31 - SHR - _Right shift_
 
+32 - JGT — _Pops two items, goes to the next program number if a > b_
+
+33 - JLT — _Pops two items, goes to the next program number if a < b_
+
+34 - JGE — _Pops two items, goes to the next program number if a >= b_
+
+35 - JLE — _Pops two items, goes to the next program number if a <= b_
+
+
 ## Examples
 
 ### Divide 6 by itself
