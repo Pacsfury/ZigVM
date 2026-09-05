@@ -1,8 +1,8 @@
 const std = @import("std");
 
-const operations = enum(u8) {nop = 0x00, push = 0x01, pop = 0x02, add = 0x03, sub = 0x04, mul = 0x05, div = 0x06, dup = 0x07, res = 0x08, jmp = 0x09, jiz = 0x0a, jnz = 0x0b, equ = 0x0c, neq = 0x0d, grt = 0x0e, smt = 0x0f, gre = 0x10, sme = 0x11, lor = 0x12, land = 0x13, lxor = 0x14, lnot = 0x15, bor = 0x16, band = 0x17, inc = 0x18, dec = 0x19 };
+const operations = enum(u8) {nop = 0x00, push = 0x01, pop = 0x02, add = 0x03, sub = 0x04, mul = 0x05, div = 0x06, dup = 0x07, res = 0x08, jmp = 0x09, jiz = 0x0a, jnz = 0x0b, equ = 0x0c, neq = 0x0d, grt = 0x0e, smt = 0x0f, gre = 0x10, sme = 0x11, lor = 0x12, land = 0x13, lxor = 0x14, lnot = 0x15, bor = 0x16, band = 0x17, inc = 0x18, dec = 0x19, cout = 0x1A };
 
-const code = [_]u8{ 0x01, 0x06, 0x07, 0x06, 0x08, 0x01, 0x00 };
+const code = [_]u8{ 0x01, 0x06, 0x07, 0x06, 0x08, 0x01, 0x41, 0x1A, 0x01, 0x00 };
 
 pub fn run(program: []const u8, stack: *std.ArrayList(i32), allocator: std.mem.Allocator) !i32 {
     var pc: usize = 0;
@@ -153,6 +153,9 @@ pub fn run(program: []const u8, stack: *std.ArrayList(i32), allocator: std.mem.A
             .dec => {
                 stack.items[stack.items.len - 1] = stack.items[stack.items.len - 1] - 1;
             },
+            .cout => {
+                std.debug.print("{c}\n", .{@as(u8, @intCast(stack.items[stack.items.len - 1]))});
+            }
         }
     }
     return if (stack.items.len > 0) stack.items[stack.items.len - 1] else 1;
