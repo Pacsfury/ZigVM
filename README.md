@@ -25,6 +25,22 @@ Developing another simple stack-based virtual machine, this time written in Zig 
 
 9 - JMP - _Goes to the next program number_
 
+10 - JIZ - _Goes to the next program number if the top of the stack is 0_
+
+11 - JNZ - _Goes to the next program number if the top of the stack is not 0_
+
+12 - EQU - _Pops the two top items from stack, if they are equal, pushes a 1, of not, a 0_
+
+13 - NEQ - _Pops the two top items from stack, if they are not equal, pushes a 1, of not, a 0_
+
+14 - GRT - _Pops the two top items from stack, if a > b, pushes a 1, of not, a 0_
+
+15 - SMT - _Pops the two top items from stack, if a < b, pushes a 1, of not, a 0_
+
+16 - GRE - _Pops the two top items from stack, if a >= b, pushes a 1, of not, a 0_
+
+17 - SME - _Pops the two top items from stack, if a <= b, pushes a 1, of not, a 0_
+
 ## Examples
 
 ### Divide 6 by itself
@@ -46,4 +62,4 @@ So basically, what the program does is:
 |----------|-----|-----------------|------------|---------------|----------|------|
 | 0x01     | 0x06| 0x07            | 0x06       | 0x08          | 0x01     | 0x00 |
 
-We push zero at the end (we could do other operations, tho) because the VM gets the top of the stack and uses it as the program result. And code 0 means all right.
+We push zero at the end (we could do other operations, like -6) because the VM gets the top of the stack and uses it as the program result. And code 0 means all right.
