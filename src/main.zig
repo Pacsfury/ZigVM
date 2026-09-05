@@ -1,6 +1,6 @@
 const std = @import("std");
 
-const operations = enum(u8) { nop = 0x00, push = 0x01, pop = 0x02, add = 0x03, sub = 0x04, mul = 0x05, div = 0x06, dup = 0x07, res = 0x08, jmp = 0x09 };
+const operations = enum(u8) { nop = 0x00, push = 0x01, pop = 0x02, add = 0x03, sub = 0x04, mul = 0x05, div = 0x06, dup = 0x07, res = 0x08, jmp = 0x09, jiz = 0x10, jnz = 0x11, equ = 0x12, neq = 0x13, grt = 0x14, smt = 0x15, gre = 0x16, sme = 0x17 };
 
 const code = [_]u8{ 0x01, 0x06, 0x07, 0x06, 0x08, 0x01, 0x00 };
 
@@ -51,6 +51,72 @@ pub fn run(program: []const u8, stack: *std.ArrayList(i32), allocator: std.mem.A
             .jmp => {
                 const target = program[pc];
                 pc = @as(usize, target);
+            },
+            .jiz => {
+                if (stack.items[stack.items.len - 1] == 0) {
+                    const target = program[pc];
+                    pc = @as(usize, target);
+                }
+            },
+            .jnz => {
+                if (stack.items[stack.items.len - 1] != 0) {
+                    const target = program[pc];
+                    pc = @as(usize, target);
+                }
+            },
+            .equ => {
+                const a = stack.pop() orelse 0;
+                const b = stack.pop() orelse 1;
+                if (a == b) {
+                    try stack.append(allocator, 1);
+                } else {
+                    try stack.append(allocator, 0);
+                }
+            },
+            .neq => {
+                const a = stack.pop() orelse 0;
+                const b = stack.pop() orelse 1;
+                if (a != b) {
+                    try stack.append(allocator, 1);
+                } else {
+                    try stack.append(allocator, 0);
+                }
+            },
+            .grt => {
+                const a = stack.pop() orelse 0;
+                const b = stack.pop() orelse 1;
+                if (a > b) {
+                    try stack.append(allocator, 1);
+                } else {
+                    try stack.append(allocator, 0);
+                }
+            },
+            .smt => {
+                const a = stack.pop() orelse 0;
+                const b = stack.pop() orelse 1;
+                if (a < b) {
+                    try stack.append(allocator, 1);
+                } else {
+                    try stack.append(allocator, 0);
+                }
+            },
+            .gre => {
+                const a = stack.pop() orelse 0;
+                const b = stack.pop() orelse 1;
+                if (a >= b) {
+                    try stack.append(allocator, 1);
+                } else {
+                    try stack.append(allocator, 0);
+                }
+            },
+            .sme => {
+                const a = stack.pop() orelse 0;
+                const b = stack.pop() orelse 1;
+                if (a <= b) {
+                    try stack.append(allocator, 1);
+                } else {
+                    try stack.append(allocator, 0);
+                }
             },
         }
     }
