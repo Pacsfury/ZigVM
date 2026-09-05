@@ -1,6 +1,6 @@
 const std = @import("std");
 
-const operations = enum(u8) { nop = 0x00, push = 0x01, pop = 0x02, add = 0x03, sub = 0x04, mul = 0x05, div = 0x06, dup = 0x07, res = 0x08, jmp = 0x09, jiz = 0x10, jnz = 0x11, equ = 0x12, neq = 0x13, grt = 0x14, smt = 0x15, gre = 0x16, sme = 0x17 };
+const operations = enum(u8) { nop = 0x00, push = 0x01, pop = 0x02, add = 0x03, sub = 0x04, mul = 0x05, div = 0x06, dup = 0x07, res = 0x08, jmp = 0x09, jiz = 0x10, jnz = 0x11, equ = 0x12, neq = 0x13, grt = 0x14, smt = 0x15, gre = 0x16, sme = 0x17, lor = 0x18, land = 0x19, lxor = 0x20, lnot = 0x21, bor = 0x22, band = 0x23 };
 
 const code = [_]u8{ 0x01, 0x06, 0x07, 0x06, 0x08, 0x01, 0x00 };
 
@@ -118,9 +118,38 @@ pub fn run(program: []const u8, stack: *std.ArrayList(i32), allocator: std.mem.A
                     try stack.append(allocator, 0);
                 }
             },
+            .lor => {
+                const b = stack.pop() orelse 0;
+                const a = stack.pop() orelse 0;
+                try stack.append(allocator, a | b);
+            },
+            .land => {
+                const b = stack.pop() orelse 0;
+                const a = stack.pop() orelse 0;
+                try stack.append(allocator, a & b);
+            },
+            .lxor => {
+                const b = stack.pop() orelse 0;
+                const a = stack.pop() orelse 0;
+                try stack.append(allocator, a ^ b);
+            },
+            .lnot => {
+                const x = stack.pop() orelse 0;
+                try stack.append(allocator, ~x);
+            },
+            .bor => {
+                const b = stack.pop() orelse 0;
+                const a = stack.pop() orelse 0;
+                try stack.append(allocator, @intFromBool((a!=0) or (b!=0)));
+            },
+            .band => {
+                const b = stack.pop() orelse 0;
+                const a = stack.pop() orelse 0;
+                try stack.append(allocator, @intFromBool((a!=0) and (b!=0)));
+            },
         }
     }
-    return if (stack.items.len > 0) stack.items[stack.items.len - 1] else 0;
+    return if (stack.items.len > 0) stack.items[stack.items.len - 1] else 1;
 }
 
 pub fn main() !void {
