@@ -53,6 +53,10 @@ Developing another simple stack-based virtual machine, this time written in Zig 
 
 23 - BAND - _Bitwise AND_
 
+24 - INC - _Increment stack top_
+
+25 - DEC - _Decrement stack top_
+
 ## Examples
 
 ### Divide 6 by itself
