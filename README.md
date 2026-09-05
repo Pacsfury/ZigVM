@@ -57,6 +57,8 @@ Developing another simple stack-based virtual machine, this time written in Zig 
 
 25 - DEC - _Decrement stack top_
 
+26 - COUT - _Print stack top as Ascii character_
+
 ## Examples
 
 ### Divide 6 by itself
