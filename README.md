@@ -41,6 +41,18 @@ Developing another simple stack-based virtual machine, this time written in Zig 
 
 17 - SME - _Pops the two top items from stack, if a <= b, pushes a 1, of not, a 0_
 
+18 - LOR - _Logical OR_
+
+19 - LAND - _Logical AND_
+
+20 - LXOR - _Logical XOR_
+
+21 - LNOT - _Logical NOT_
+
+22 - BOR - _Bitwise OR_
+
+23 - BAND - _Bitwise AND_
+
 ## Examples
 
 ### Divide 6 by itself
