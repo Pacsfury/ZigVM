@@ -63,6 +63,12 @@ Developing another simple stack-based virtual machine, this time written in Zig 
 
 28 - CLS - _Delete the stack_
 
+29 - MOD - _Divides two top numbers, pops them and push the remainder of the division_
+
+30 - SHL - _Left shift_
+
+31 - SHR - _Right shift_
+
 ## Examples
 
 ### Divide 6 by itself
