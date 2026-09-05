@@ -59,6 +59,10 @@ Developing another simple stack-based virtual machine, this time written in Zig 
 
 26 - COUT - _Print stack top as Ascii character_
 
+27 - SWAP - _Swap stack[-1] and stack[-2]_
+
+28 - CLS - _Delete the stack_
+
 ## Examples
 
 ### Divide 6 by itself
